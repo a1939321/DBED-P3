@@ -65,7 +65,7 @@ class SimpleDatabase:
         col_id = self.columns[column_name]
 
         if self.b_trees[col_id] is not None:
-            print("Error: Index already exists on this column.")
+            print("Error: Index already existed on this column.")
             return
         # create a new B-tree and fill it with the rows
         btree = BTree()
@@ -87,13 +87,14 @@ class SimpleDatabase:
             return
         col_id = self.columns[column_name]
 
-        if self.b_trees[col_id] is None:
+        if self.b_trees[col_id] is None: # Check if index exists
             print("Error: No index exists on this column.")
             return
 
         # drop the index
         self.b_trees[col_id] = None
         print("Dropped index for ", column_name)
+        
     def select_rows(self, table_name, column_name, column_value):
         # modify this code such that row selection uses index if it exists
         # note that our DBMS only supports loading one table at a time

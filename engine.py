@@ -46,7 +46,7 @@ def run_engine():
                         index_columns.append(col)
                 if index_columns:
                     for col in index_columns:
-                        print("Index on column " col)
+                        print("Index on column ", col)
 
         elif command.startswith("copy "):
             # e.g., copy my_table from 'file_name.csv'

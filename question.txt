@@ -7,3 +7,4 @@ Suppose that you are given source code for a DBMS that does not support indexing
 
 Answer:
 ... your answer here ...
+To test DBMS work
