@@ -14,12 +14,12 @@ def print_selected(header, rows):
     for row in rows:
         print(', '.join(row))
     print('_' * 30)
-    
+
 
 def run_engine():
     print("Welcome to the SimpleQL Database Management System!")
     db = SimpleDatabase()
-    
+
     while True:
         command = input("Enter command: ")
         if not command.endswith(";"):
@@ -30,7 +30,7 @@ def run_engine():
         if command == "exit":
             print("Leaving, bye!")
             break
-        
+
         elif command == "show tables":
             # modify this section, so that the command
             # also prints columns for which index was built
@@ -40,7 +40,14 @@ def run_engine():
                 print("... no tables loaded ...")
             else:
                 print(table_name)
-            
+                index_columns = []
+                for i, col in enumerate(db.header):
+                    if db.b_trees[i] is not None:
+                        index_columns.append(col)
+                if index_columns:
+                    for col in index_columns:
+                        print("Index on column " col)
+
         elif command.startswith("copy "):
             # e.g., copy my_table from 'file_name.csv'
             words = command.split() # breaks down command into words
@@ -53,7 +60,7 @@ def run_engine():
             table_name = words[1]
             file_name = words[3][1:-1] # to remove ' around file name
             db.load_table(table_name, file_name)
-            
+
         elif command.startswith("select * from "):
             # e.g., select * from my_table where name="Bob"
             command = command.replace("=", " = ") # ensure spaces around =
@@ -62,15 +69,15 @@ def run_engine():
                 # we expect a particular number of words in this command
                 print("Incorrect command format")
                 continue
-            
+
             table_name = words[3]
             column_name = words[5]
             column_value = words[7][1:-1] # to remove " around the value
-            
+
             start = time.time()
             header, rows = db.select_rows(table_name, column_name, column_value)
             end = time.time()
-            
+
             if len(header) == 0:
                 print("... no such table ...")
             else:
@@ -78,7 +85,24 @@ def run_engine():
                 print("Time elapsed: ", round(1000*(end - start)), " ms")
 
         # add code for processing create index and drop index here ...
-            
+        elif command.startswith("create index on "):
+            # e.g., create index on my_table (name)
+            command = command.replace("(", " ( ").replace(")", " ) ")
+            words = command.split()  # breaks down command into words
+            if len(words) != 4: # Expecting a 4 words words in this command
+                print("Incorrect command format")
+                continue
+            column_name = words[3]
+            db.create_index(column_name)
+
+        elif command.startswith("drop index on "):
+            words = command.split()  # breaks down command into words
+            if len(words) != 4: # Expecting a 4 words words in this command
+                print("Incorrect command format")
+                continue
+            column_name = words[3]
+            db.drop_index(column_name)
+
         else:
             print("Unrecognized command!")
 
