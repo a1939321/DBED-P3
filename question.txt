@@ -7,4 +7,20 @@ Suppose that you are given source code for a DBMS that does not support indexing
 
 Answer:
 ... your answer here ...
-To test DBMS work
+To test my extended code to ensure it work with the DBMS, I have tested a combination of
+functional, performance and error testing.
+
+Funtional testing:
+I ran queries on id column (e.g select * from students where id='id number';)
+and created an index on column id. I ran that queries again to ensure that it still
+return the same result as before. I also tried create multiple indexes and run the same query
+to check whether the results remained identical.
+
+Error testing:
+I tried to create index on the same columns tiwce,drop index on the columns that did not have one and
+create index on a non-exist column.
+This was done to ensure the DBMS continued to function correctly and produced appropriate error messages
+
+Performance testing:
+while doing all those test above I pay attendtion to time elapse of the queries and compare the different
+when with and without index to confirm the usefullness of indexing feature.
